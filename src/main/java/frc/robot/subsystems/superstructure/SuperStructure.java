@@ -22,11 +22,11 @@ public class SuperStructure {
     public enum SuperStructurePose {
         // Useful poses
         IDLE(0, Degrees.of(110)),
-        INTAKE(0, Degrees.of(136)),
-        SCORE_L2(0.22, Degrees.of(110)),
-        SCORE_L3(0.66, Degrees.of(110)),
-        SCORE_L4(1.24, Degrees.of(100)),
-        SCORE_L4_COMPLETE(1.30, Degrees.of(92)),
+        INTAKE(0.000, Degrees.of(132)),
+        SCORE_L2(0.25, Degrees.of(107)), // 110
+        SCORE_L3(0.69, Degrees.of(107)), // 110
+        SCORE_L4(1.43, Degrees.of(73)),
+        SCORE_L4_COMPLETE(1.45, Degrees.of(82)),
 
         // Swap poses that serve as interior waypoints
         // (don't run them)

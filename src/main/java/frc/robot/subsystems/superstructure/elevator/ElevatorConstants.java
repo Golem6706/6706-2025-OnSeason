@@ -58,7 +58,7 @@ public final class ElevatorConstants {
                         9.0 * 60.0 / 36.0,
                         DCMotor.getKrakenX60(1),
                         Kilograms.of(7.0),
-                        Meters.of(1.34),
+                        Meters.of(1.5), // 1.34
                         15,
                         false);
             };
@@ -112,8 +112,8 @@ public final class ElevatorConstants {
                         3.0 / 0.2,
                         Volts.of(12),
                         Volts.of(-8),
-                        MetersPerSecond.of(2),
-                        MetersPerSecondPerSecond.of(8),
+                        MetersPerSecond.of(1.4), // Speed of elevator
+                        MetersPerSecondPerSecond.of(6.0), // accleration of elevator
                         Centimeters.of(2));
             };
 }

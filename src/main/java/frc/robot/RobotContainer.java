@@ -77,7 +77,7 @@ public class RobotContainer {
 
     // Controller
     // public final DriverMap driver = new DriverMap.LeftHandedPS5(0);
-    public final DriverMap driver = new DriverMap.LeftHandedXbox(0);
+    public final DriverMap driver = new DriverMap.RightHandedXbox(0);
     public final CommandXboxController operator = new CommandXboxController(1);
 
     private final LoggedDashboardChooser<Auto> autoChooser;

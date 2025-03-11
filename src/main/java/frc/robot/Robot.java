@@ -29,7 +29,7 @@ public class Robot extends LoggedRobot {
 
     private static final RobotMode JAVA_SIM_MODE = RobotMode.SIM;
     public static final RobotMode CURRENT_ROBOT_MODE = isReal() ? RobotMode.REAL : JAVA_SIM_MODE;
-    public static final RobotName CURRENT_ROBOT = RobotName.TEAM_5516_COMPBOT_HYDROXIDE_II;
+    public static final RobotName CURRENT_ROBOT = RobotName.TEAM_6706_COMPBOT;
     private Command autonomousCommand;
     private RobotContainer robotContainer;
 
