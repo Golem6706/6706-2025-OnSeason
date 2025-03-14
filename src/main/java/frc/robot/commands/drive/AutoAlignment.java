@@ -46,10 +46,19 @@ public class AutoAlignment {
                         target.roughTarget(), target.faceToTargetDuringRoughApproach(), config)
                 .onlyIf(() -> RobotState.getInstance()
                                 .getVisionPose()
+                                .minus(target.roughTarget())
+                                .getTranslation()
+                                .getNorm()
+                        > config.distanceStartPreciseApproach.in(Meters))
+                .onlyIf(() -> RobotState.getInstance()
+                                .getVisionPose()
                                 .minus(target.preciseTarget())
                                 .getTranslation()
                                 .getNorm()
-                        > config.distanceStartPreciseApproach.in(Meters));
+                        > target.roughTarget()
+                                .minus(target.preciseTarget())
+                                .getTranslation()
+                                .getNorm());
         Command preciseAlignment = preciseAlignment(
                         driveSubsystem, target.preciseTarget(), target.preciseApproachDirection(), config)
                 .deadlineFor(vision.focusOnTarget(target.tagIdToFocus(), target.cameraToFocus()));
@@ -61,7 +70,8 @@ public class AutoAlignment {
                         .beforeStarting(() -> {
                             for (Command toSchedule : toScheduleBeforePreciseAlignment) toSchedule.schedule();
                         }))
-                .finallyDo(alignmentComplete(target::preciseTarget, statusLight)::schedule);
+                .finallyDo(alignmentComplete(target::preciseTarget, statusLight)::schedule)
+                .withName("Path Find & Auto Align");
     }
 
     public static Command followPathAndAutoAlignStatic(
@@ -83,7 +93,9 @@ public class AutoAlignment {
         Command preciseAlignment = preciseAlignment(
                         driveSubsystem, target.preciseTarget(), target.preciseApproachDirection(), config)
                 .deadlineFor(vision.focusOnTarget(target.tagIdToFocus(), target.cameraToFocus()))
-                .finallyDo(driveSubsystem::stop);
+                .finallyDo(driveSubsystem::stop)
+                .withName("Follow Path & Auto Align");
+        ;
 
         return followPath
                 .andThen(preciseAlignment

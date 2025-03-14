@@ -373,9 +373,9 @@ public class RobotContainer {
 
         /* auto alignment example, delete it for your project */
         driver.autoAlignmentButtonLeft()
-                .whileTrue(ReefAlignment.alignmentToBranch(drive, aprilTagVision, ledStatusLight, false));
+                .whileTrue(ReefAlignment.alignToNearestBranch(drive, aprilTagVision, ledStatusLight, false));
         driver.autoAlignmentButtonRight()
-                .whileTrue(ReefAlignment.alignmentToBranch(drive, aprilTagVision, ledStatusLight, true));
+                .whileTrue(ReefAlignment.alignToNearestBranch(drive, aprilTagVision, ledStatusLight, true));
 
         coralHolder.setDefaultCommand(coralHolder.runIdle());
 
