@@ -34,6 +34,7 @@ import frc.robot.subsystems.drive.IO.*;
 import frc.robot.subsystems.led.LEDAnimation;
 import frc.robot.subsystems.led.LEDStatusLight;
 import frc.robot.subsystems.superstructure.SuperStructure;
+import frc.robot.subsystems.superstructure.SuperStructure.SuperStructurePose;
 import frc.robot.subsystems.superstructure.SuperStructureVisualizer;
 import frc.robot.subsystems.superstructure.arm.Arm;
 import frc.robot.subsystems.superstructure.arm.ArmIOReal;
@@ -228,10 +229,12 @@ public class RobotContainer {
                 || superStructure.currentPose() == SuperStructure.SuperStructurePose.HIGH_ALGAE
                 || superStructure.currentPose() == SuperStructure.SuperStructurePose.ALGAE_SWAP_2
                 || superStructure.currentPose() == SuperStructure.SuperStructurePose.SCORE_ALGAE
+                || superStructure.currentPose() == SuperStructurePose.SCORE_NET
                 || superStructure.targetPose() == SuperStructure.SuperStructurePose.LOW_ALGAE
                 || superStructure.targetPose() == SuperStructure.SuperStructurePose.HIGH_ALGAE
                 || superStructure.targetPose() == SuperStructure.SuperStructurePose.ALGAE_SWAP_2
-                || superStructure.targetPose() == SuperStructure.SuperStructurePose.SCORE_ALGAE);
+                || superStructure.targetPose() == SuperStructure.SuperStructurePose.SCORE_ALGAE
+                || superStructure.currentPose() == SuperStructurePose.SCORE_NET);
         configureButtonBindings();
         configureLEDEffects();
 
@@ -329,9 +332,8 @@ public class RobotContainer {
                 .andThen(coralHolder.keepCoralShuffledForever());
         return superStructure
                 .moveToPose(SuperStructure.SuperStructurePose.SCORE_L4)
-                .deadlineFor(shuffleCoralDuringElevatorMovement)
+                .deadlineFor(shuffleCoralDuringElevatorMovement.onlyIf(coralHolder.hasCoral))
                 // only raise elevator if coral in place to avoid getting jammed
-                .onlyIf(coralHolder.hasCoral)
                 .asProxy();
     }
 
@@ -420,15 +422,18 @@ public class RobotContainer {
                 .and(operator.leftBumper().or(isAlgaeMode))
                 .onTrue(superStructure.moveToPose(SuperStructure.SuperStructurePose.HIGH_ALGAE));
         operator.rightBumper()
-                .and(isAlgaeMode)
+                .and(operator.povDown())
                 .onTrue(superStructure.moveToPose(SuperStructure.SuperStructurePose.SCORE_ALGAE));
+        operator.rightBumper()
+                .and(operator.povUp())
+                .onTrue(superStructure.moveToPose(SuperStructure.SuperStructurePose.SCORE_NET));
         operator.leftTrigger(0.5).and(isAlgaeMode).onTrue(coralHolder.runVolts(-3, 0));
-        operator.rightTrigger(0.5).and(isAlgaeMode).whileTrue(coralHolder.runVolts(6, 0));
+        operator.rightTrigger(0.5).and(isAlgaeMode).whileTrue(coralHolder.runVolts(10, 0));
         isAlgaeMode.onFalse(coralHolder.runVolts(-2, 0).withTimeout(0.5));
         operator.back().whileTrue(coralHolder.runVolts(-0.5, -6));
 
         // climbing
-        operator.start().and(operator.b()).onTrue(climb.climbCommand(operator::getLeftY));
+        operator.start().and(operator.b()).onTrue(climb.climbCommand(operator::getLeftY, operator::getRightY));
         operator.start().and(operator.x()).onTrue(climb.cancelClimb());
 
         operator.y().onTrue(ReefAlignment.selectReefPartButton(3).ignoringDisable(true));

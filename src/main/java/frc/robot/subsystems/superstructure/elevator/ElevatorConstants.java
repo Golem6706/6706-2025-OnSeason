@@ -58,7 +58,7 @@ public final class ElevatorConstants {
                         9.0 * 60.0 / 36.0,
                         DCMotor.getKrakenX60(1),
                         Kilograms.of(7.0),
-                        Meters.of(1.5), // 1.34
+                        Meters.of(1.82), // The max hight of the elevator 1.75
                         15,
                         false);
             };

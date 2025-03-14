@@ -17,13 +17,20 @@ public class Climb extends SubsystemBase {
     public Climb(ClimbIO io) {
         this.io = io;
         io.disableFlipServo();
-        io.setMotorOutput(0.0);
+        io.setClimbMotorOutput(0.0);
+        io.setClimbRotationMotorOutput(0.0);
     }
 
-    public Command climbCommand(DoubleSupplier climbPowerSupplier) {
-        return run(() -> io.setMotorOutput(climbPowerSupplier.getAsDouble() * 12.0))
+    public Command climbCommand(DoubleSupplier climbPowerSupplier, DoubleSupplier climbRotationPowerSupplier) {
+        return run(() -> {
+                    io.setClimbMotorOutput(climbPowerSupplier.getAsDouble() * 12.0);
+                    io.setClimbRotationMotorOutput(climbRotationPowerSupplier.getAsDouble() * 12.0);
+                })
                 .beforeStarting(() -> io.setFlipServo(true))
-                .finallyDo(() -> io.setMotorOutput(0.0));
+                .finallyDo(() -> {
+                    io.setClimbMotorOutput(0.0);
+                    io.setClimbRotationMotorOutput(0.0);
+                });
     }
 
     public Command cancelClimb() {
@@ -33,7 +40,9 @@ public class Climb extends SubsystemBase {
     }
 
     public interface ClimbIO {
-        default void setMotorOutput(double volts) {}
+        default void setClimbMotorOutput(double volts) {}
+
+        default void setClimbRotationMotorOutput(double volts) {}
 
         default void setFlipServo(boolean activated) {}
 
@@ -43,13 +52,26 @@ public class Climb extends SubsystemBase {
     public static final class ClimbIOReal implements ClimbIO {
         private final Servo servo;
         private final TalonFX climbMotor;
+        private final TalonFX climbRotationMotor;
 
         public ClimbIOReal() {
             this.servo = new Servo(1);
             servo.setDisabled();
-            this.climbMotor = new TalonFX(15);
+            this.climbMotor = new TalonFX(17);
+            this.climbRotationMotor = new TalonFX(16);
             climbMotor.getConfigurator().apply(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
             climbMotor
+                    .getConfigurator()
+                    .apply(new CurrentLimitsConfigs()
+                            .withSupplyCurrentLimitEnable(true)
+                            .withSupplyCurrentLimit(40)
+                            .withStatorCurrentLimitEnable(true)
+                            .withStatorCurrentLimit(60));
+
+            climbRotationMotor
+                    .getConfigurator()
+                    .apply(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
+            climbRotationMotor
                     .getConfigurator()
                     .apply(new CurrentLimitsConfigs()
                             .withSupplyCurrentLimitEnable(true)
@@ -61,7 +83,12 @@ public class Climb extends SubsystemBase {
         private final VoltageOut voltageOut = new VoltageOut(0);
 
         @Override
-        public void setMotorOutput(double volts) {
+        public void setClimbMotorOutput(double volts) {
+            climbMotor.setControl(voltageOut.withOutput(volts));
+        }
+
+        @Override
+        public void setClimbRotationMotorOutput(double volts) {
             climbMotor.setControl(voltageOut.withOutput(volts));
         }
 

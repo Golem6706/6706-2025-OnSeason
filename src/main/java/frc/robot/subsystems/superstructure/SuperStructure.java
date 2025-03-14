@@ -21,23 +21,23 @@ public class SuperStructure {
      */
     public enum SuperStructurePose {
         // Useful poses
-        IDLE(0, Degrees.of(110)),
+        IDLE(0, Degrees.of(113)),
         INTAKE(0.000, Degrees.of(132)),
-        SCORE_L2(0.25, Degrees.of(107)), // 110
-        SCORE_L3(0.69, Degrees.of(107)), // 110
-        SCORE_L4(1.43, Degrees.of(73)),
-        SCORE_L4_COMPLETE(1.45, Degrees.of(82)),
+        SCORE_L2(0.25, Degrees.of(110)), // 110
+        SCORE_L3(0.69, Degrees.of(110)), // 110
+        SCORE_L4(1.32, Degrees.of(100)),
+        SCORE_L4_COMPLETE(1.45, Degrees.of(73)),
 
         // Swap poses that serve as interior waypoints
         // (don't run them)
         // Allow Arm to swing down at zero height
 
         // At 0.3 meters height, allow arm to swing up and down
-        LOW_SWAP_1(0.3, Degrees.of(110)),
+        LOW_SWAP_1(0.3, Degrees.of(107)),
         LOW_SWAP_2(0.3, Degrees.of(55)),
 
         // Swap pose to run to L4
-        HIGH_SWAP(1.24, Degrees.of(110)),
+        HIGH_SWAP(1.35, Degrees.of(113)),
 
         // Legacy L4 Scoring Poses (for dev bot)
         //        SCORE_L4_LEGACY(1.32, Degrees.of(85)),
@@ -47,10 +47,12 @@ public class SuperStructure {
         LOW_ALGAE(0.65, Degrees.of(-45)),
         HIGH_ALGAE(1.1, Degrees.of(-45)),
         SCORE_ALGAE(0.2, Degrees.of(-45)),
+
+        SCORE_NET(1.80, Degrees.of(10)),
         ALGAE_SWAP_1(0.3, Degrees.of(110)),
         ALGAE_SWAP_2(0.3, Degrees.of(-45)),
-        ALGAE_SWAP_3(0.9, Degrees.of(110)),
-        ALGAE_SWAP_4(0.9, Degrees.of(-45));
+        ALGAE_SWAP_3(0.75, Degrees.of(110)),
+        ALGAE_SWAP_4(0.75, Degrees.of(-45));
 
         public final double elevatorHeightMeters;
         public final Angle armAngle;
@@ -107,6 +109,8 @@ public class SuperStructure {
             new PoseLink(SuperStructurePose.ALGAE_SWAP_3, SuperStructurePose.ALGAE_SWAP_4),
             new PoseLink(SuperStructurePose.ALGAE_SWAP_4, SuperStructurePose.LOW_ALGAE),
             new PoseLink(SuperStructurePose.ALGAE_SWAP_4, SuperStructurePose.HIGH_ALGAE),
+            new PoseLink(SuperStructurePose.ALGAE_SWAP_4, SuperStructurePose.SCORE_NET),
+            new PoseLink(SuperStructurePose.HIGH_ALGAE, SuperStructurePose.SCORE_NET),
             new PoseLink(SuperStructurePose.ALGAE_SWAP_4, SuperStructurePose.SCORE_ALGAE));
 
     /**
@@ -222,7 +226,7 @@ public class SuperStructure {
                             HIGH_SWAP,
                             ALGAE_SWAP_1,
                             ALGAE_SWAP_3 -> SuperStructure.SuperStructurePose.IDLE;
-                    case LOW_ALGAE, HIGH_ALGAE, SCORE_ALGAE, ALGAE_SWAP_2, ALGAE_SWAP_4 -> SuperStructure
+                    case LOW_ALGAE, HIGH_ALGAE, SCORE_ALGAE, ALGAE_SWAP_2, ALGAE_SWAP_4, SCORE_NET -> SuperStructure
                             .SuperStructurePose.SCORE_ALGAE;
                     case INTAKE -> SuperStructure.SuperStructurePose.INTAKE;
                 }));
