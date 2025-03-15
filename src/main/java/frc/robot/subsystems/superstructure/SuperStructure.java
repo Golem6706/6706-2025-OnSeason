@@ -22,7 +22,7 @@ public class SuperStructure {
     public enum SuperStructurePose {
         // Useful poses
         IDLE(0, Degrees.of(113)),
-        INTAKE(0.000, Degrees.of(132)),
+        INTAKE(0.000, Degrees.of(132)), // 132
         SCORE_L2(0.25, Degrees.of(110)), // 110
         SCORE_L3(0.69, Degrees.of(110)), // 110
         SCORE_L4(1.32, Degrees.of(100)),
@@ -48,7 +48,7 @@ public class SuperStructure {
         HIGH_ALGAE(1.1, Degrees.of(-45)),
         SCORE_ALGAE(0.2, Degrees.of(-45)),
 
-        SCORE_NET(1.80, Degrees.of(10)),
+        SCORE_NET(1.80, Degrees.of(10)), // The original number is 0
         ALGAE_SWAP_1(0.3, Degrees.of(110)),
         ALGAE_SWAP_2(0.3, Degrees.of(-45)),
         ALGAE_SWAP_3(0.75, Degrees.of(110)),

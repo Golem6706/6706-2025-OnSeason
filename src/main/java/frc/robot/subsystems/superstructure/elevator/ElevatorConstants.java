@@ -112,7 +112,7 @@ public final class ElevatorConstants {
                         3.0 / 0.2,
                         Volts.of(12),
                         Volts.of(-8),
-                        MetersPerSecond.of(1.4), // Speed of elevator
+                        MetersPerSecond.of(2), // Speed of elevator origianl number is 1.4
                         MetersPerSecondPerSecond.of(6.0), // accleration of elevator
                         Centimeters.of(2));
             };

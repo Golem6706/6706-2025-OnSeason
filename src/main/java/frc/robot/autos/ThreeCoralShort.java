@@ -93,18 +93,18 @@ public class ThreeCoralShort implements Auto {
         commandGroup.addCommands(waitForIntake(robot));
 
         // Score Third
-        // commandGroup.addCommands(ReefAlignment.followPathAndAlign(
-        //         robot, Auto.getChoreoPath("place third", isRightSide), thirdGoalAndFourthGoal, Commands.none()));
-        // commandGroup.addCommands(Commands.waitUntil(robot.superStructure.atReference)
-        //         .withTimeout(WAIT_FOR_SUPER_STRUCTURE_TIMEOUT.in(Seconds)));
-        // commandGroup.addCommands(robot.scoreCoral(SCORING_TIME.in(Seconds)));
+        commandGroup.addCommands(ReefAlignment.followPathAndAlign(
+                robot, Auto.getChoreoPath("place third", isRightSide), thirdGoalAndFourthGoal, Commands.none()));
+        commandGroup.addCommands(Commands.waitUntil(robot.superStructure.atReference)
+                .withTimeout(WAIT_FOR_SUPER_STRUCTURE_TIMEOUT.in(Seconds)));
+        commandGroup.addCommands(robot.scoreCoral(SCORING_TIME.in(Seconds)));
 
         // Move Back
-        // commandGroup.addCommands(
-        //         followChoreoPath("grab fourth", RobotState.NavigationMode.SENSOR_LESS_ODOMETRY, isRightSide)
-        //                 .deadlineFor(robot.superStructure
-        //                         .moveToPose(SuperStructure.SuperStructurePose.IDLE)
-        //                         .asProxy()));
+        commandGroup.addCommands(
+                followChoreoPath("grab fourth", RobotState.NavigationMode.SENSOR_LESS_ODOMETRY, isRightSide)
+                        .deadlineFor(robot.superStructure
+                                .moveToPose(SuperStructure.SuperStructurePose.IDLE)
+                                .asProxy()));
 
         System.out.println("auto command requires: ");
         for (Subsystem subsystem : commandGroup.getRequirements()) System.out.println("    " + subsystem);

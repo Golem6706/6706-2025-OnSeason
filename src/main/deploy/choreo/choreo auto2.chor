@@ -28,8 +28,8 @@
    "transvel":{
     "dimension":"LinVel",
     "var":{
-     "exp":"0.8 m / s",
-     "val":0.8
+     "exp":"0.5 m / s",
+     "val":0.5
     }
    }
   },

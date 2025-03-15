@@ -29,6 +29,7 @@ public final class CoralHolderConstants {
 
     public record VoltageSettings(double INTAKE_VOLTS, double SHOOT_VOLTS, double BRAKE_VOLTS, double SHUFFLE_VOLTS) {}
 
+    // Set the speed of Intake
     public static final VoltageSettings VOLTAGE_SETTINGS =
             switch (Robot.CURRENT_ROBOT) {
                 case TEAM_5516_DEVBOT_HYDROXIDE_I, TEAM_5516_COMPBOT_HYDROXIDE_II -> new VoltageSettings(

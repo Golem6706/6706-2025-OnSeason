@@ -39,22 +39,28 @@ public class DriveControlLoops {
     public static final Distance AUTO_ALIGNMENT_SUCCESS_BIAS_TOLERANCE = Centimeters.of(2);
     public static final Distance AUTO_ALIGNMENT_SUCCESS_DISTANCE_TOLERANCE = Centimeters.of(6);
     public static final Angle AUTO_ALIGNMENT_SUCCESS_TOLERANCE_ROTATIONAL = Degrees.of(2);
+
     public static final AutoAlignment.AutoAlignmentConfigurations REEF_ALIGNMENT_CONFIG_AUTONOMOUS =
             new AutoAlignment.AutoAlignmentConfigurations(
                     Meters.of(0.2),
-                    MetersPerSecond.of(1.0),
-                    Meters.of(0.3),
+                    MetersPerSecond.of(0.8),
+                    Meters.of(0.4),
                     MetersPerSecond.of(0.2),
-                    MetersPerSecondPerSecond.of(2.0)); // Auto阶段速度和加速度
+                    MetersPerSecondPerSecond.of(1.8)); // Auto阶段速度和加速度
 
+    /*
+     贴近Reef的时候的配置参数
+    */
     public static final AutoAlignment.AutoAlignmentConfigurations REEF_ALIGNMENT_CONFIG =
             new AutoAlignment.AutoAlignmentConfigurations(
                     Meters.of(0.5),
-                    MetersPerSecond.of(1.0),
-                    Meters.of(0.3),
+                    MetersPerSecond.of(0.8), // 1
+                    Meters.of(0.5), // 0.3 贴合的时候后退的距离
                     MetersPerSecond.of(0.2),
                     MetersPerSecondPerSecond.of(2.0)); // 手动阶段速度和 加速度
-
+    /*
+     贴近Station的时候的配置参数
+    */
     public static final AutoAlignment.AutoAlignmentConfigurations STATION_ALIGNMENT_CONFIG =
             new AutoAlignment.AutoAlignmentConfigurations(
                     Meters.of(0.6),
