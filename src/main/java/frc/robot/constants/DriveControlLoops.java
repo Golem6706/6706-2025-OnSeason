@@ -53,7 +53,7 @@ public class DriveControlLoops {
     */
     public static final AutoAlignment.AutoAlignmentConfigurations REEF_ALIGNMENT_CONFIG =
             new AutoAlignment.AutoAlignmentConfigurations(
-                    Meters.of(0.5),
+                    Meters.of(1.0),
                     MetersPerSecond.of(0.8), // 1
                     Meters.of(0.5), // 0.3 贴合的时候后退的距离
                     MetersPerSecond.of(0.2),

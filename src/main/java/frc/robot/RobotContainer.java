@@ -383,7 +383,7 @@ public class RobotContainer {
                 .onFalse(coralHolder
                         .intakeCoralSequence()
                         .onlyIf(coralHolder.hasCoral)
-                        .andThen(superStructure.moveToPose(SuperStructure.SuperStructurePose.IDLE)));
+                        .andThen(superStructure.moveToPose(SuperStructurePose.INTAKE)));
         driver.moveToL2Button()
                 .onTrue(superStructure.moveToPose(SuperStructure.SuperStructurePose.SCORE_L2))
                 .onTrue(coralHolder.keepCoralShuffledForever());
@@ -394,7 +394,7 @@ public class RobotContainer {
 
         // Retrieve elevator at the start of teleop
         new Trigger(DriverStation::isTeleopEnabled)
-                .onTrue(superStructure.moveToPose(SuperStructure.SuperStructurePose.IDLE));
+                .onTrue(superStructure.moveToPose(SuperStructurePose.INTAKE));
 
         // Retrieve elevator when robot is about to tip
         drive.driveTrainTipping
@@ -406,7 +406,7 @@ public class RobotContainer {
 
         driver.scoreButton()
                 .onTrue(scoreCoral(1.0))
-                .onFalse(superStructure.moveToPose(SuperStructure.SuperStructurePose.IDLE));
+                .onFalse(superStructure.moveToPose(SuperStructurePose.INTAKE));
 
         operator.povDown()
                 .and(operator.leftBumper().or(isAlgaeMode))

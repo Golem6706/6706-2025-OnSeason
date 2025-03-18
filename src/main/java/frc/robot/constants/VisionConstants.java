@@ -178,7 +178,7 @@ public class VisionConstants {
                                 Degrees.zero()));
                 case TEAM_6706_COMPBOT -> List.of(
                         new PhotonCameraProperties(
-                                "FrontLeftCam",
+                                "FrontLeftLowerCam",
                                 Hertz.of(35),
                                 Milliseconds.of(35),
                                 Milliseconds.of(5),
@@ -190,14 +190,14 @@ public class VisionConstants {
                                 new Translation2d(0.14, 0.27),
                                 Centimeters.of(57),
                                 Rotation2d.fromDegrees(0),
-                                Degrees.of(-35),
+                                Degrees.of(-33),
                                 Degrees.zero()),
                         new PhotonCameraProperties(
-                                "FrontRightCam",
+                                "FrontRightLowerCam",
                                 Hertz.of(35),
                                 Milliseconds.of(35),
                                 Milliseconds.of(5),
-                                Degrees.of(72),
+                                Degrees.of(58),
                                 0.9,
                                 0.2,
                                 1280,
@@ -205,7 +205,22 @@ public class VisionConstants {
                                 new Translation2d(0.14, -0.27),
                                 Centimeters.of(57),
                                 Rotation2d.fromDegrees(0),
-                                Degrees.of(-35),
+                                Degrees.of(-18),
+                                Degrees.zero()),
+                        new PhotonCameraProperties(
+                                "FrontLeftUpperCam",
+                                Hertz.of(35),
+                                Milliseconds.of(35),
+                                Milliseconds.of(5),
+                                Degrees.of(58),
+                                0.9,
+                                0.2,
+                                1280,
+                                800,
+                                new Translation2d(0.14, 0.27),
+                                Centimeters.of(61),
+                                Rotation2d.fromDegrees(0),
+                                Degrees.of(-18),
                                 Degrees.zero()));
             };
 }
