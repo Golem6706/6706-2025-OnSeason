@@ -254,7 +254,14 @@ public class SwerveDrive extends SubsystemBase implements HolonomicDriveSubsyste
         executeSetpoint();
     }
 
+    private SwerveSetpoint constrainSetpoint(SwerveSetpoint setpoint) {
+        ChassisSpeeds speeds = HolonomicDriveSubsystem.constrainSpeeds(setpoint.robotRelativeSpeeds());
+        SwerveDriveKinematics.desaturateWheelSpeeds(setpoint.moduleStates(), CHASSIS_MAX_VELOCITY);
+        return new SwerveSetpoint(speeds, setpoint.moduleStates(), setpoint.feedforwards());
+    }
+
     private void executeSetpoint() {
+        setpoint = constrainSetpoint(setpoint);
         OptionalDouble angularVelocityOverride =
                 ChassisHeadingController.getInstance().calculate(getMeasuredChassisSpeedsFieldRelative(), getPose());
         ChassisSpeeds speeds = setpoint.robotRelativeSpeeds();
