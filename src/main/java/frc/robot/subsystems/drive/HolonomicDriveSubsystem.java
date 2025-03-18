@@ -11,7 +11,6 @@ import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.DriveFeedforwards;
 import com.pathplanner.lib.util.PathPlannerLogging;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -172,16 +171,15 @@ public interface HolonomicDriveSubsystem extends Subsystem {
                 && Math.abs(chassisSpeeds.vyMetersPerSecond) < 0.05;
     }
 
-    
-     static ChassisSpeeds constrainSpeeds(ChassisSpeeds speeds) {
-         Translation2d translationalSpeedMPS = new Translation2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond);
-         if (translationalSpeedMPS.getNorm() > MOVEMENT_VELOCITY_SOFT_CONSTRAIN.in(MetersPerSecond))
-             translationalSpeedMPS = new Translation2d(
-                     MOVEMENT_VELOCITY_SOFT_CONSTRAIN.in(MetersPerSecond), translationalSpeedMPS.getAngle());
-         double angularVelocityRadPerSec = MathUtil.clamp(
-                 speeds.omegaRadiansPerSecond,
-                 -ANGULAR_VELOCITY_SOFT_CONSTRAIN.in(RadiansPerSecond),
-                 ANGULAR_VELOCITY_SOFT_CONSTRAIN.in(RadiansPerSecond));
-         return new ChassisSpeeds(translationalSpeedMPS.getX(), translationalSpeedMPS.getY(), angularVelocityRadPerSec);
-     }
+    static ChassisSpeeds constrainSpeeds(ChassisSpeeds speeds) {
+        Translation2d translationalSpeedMPS = new Translation2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond);
+        if (translationalSpeedMPS.getNorm() > MOVEMENT_VELOCITY_SOFT_CONSTRAIN.in(MetersPerSecond))
+            translationalSpeedMPS = new Translation2d(
+                    MOVEMENT_VELOCITY_SOFT_CONSTRAIN.in(MetersPerSecond), translationalSpeedMPS.getAngle());
+        double angularVelocityRadPerSec = MathUtil.clamp(
+                speeds.omegaRadiansPerSecond,
+                -ANGULAR_VELOCITY_SOFT_CONSTRAIN.in(RadiansPerSecond),
+                ANGULAR_VELOCITY_SOFT_CONSTRAIN.in(RadiansPerSecond));
+        return new ChassisSpeeds(translationalSpeedMPS.getX(), translationalSpeedMPS.getY(), angularVelocityRadPerSec);
+    }
 }

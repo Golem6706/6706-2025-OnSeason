@@ -25,7 +25,6 @@ import frc.robot.commands.drive.*;
 import frc.robot.commands.reefscape.ReefAlignment;
 import frc.robot.constants.*;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.climb.Climb;
 import frc.robot.subsystems.coralholder.CoralHolder;
 import frc.robot.subsystems.coralholder.CoralHolderIOReal;
 import frc.robot.subsystems.coralholder.CoralHolderIOSim;
@@ -90,7 +89,6 @@ public class RobotContainer {
     public final Elevator elevator;
     public final SuperStructure superStructure;
     public final CoralHolder coralHolder;
-    private final Climb climb;
 
     private final Field2d field = new Field2d();
 
@@ -127,7 +125,6 @@ public class RobotContainer {
                         RobotState.getInstance()::getPrimaryEstimatorPose,
                         arm::getArmAngle,
                         elevator::getHeightMeters);
-                climb = new Climb(new Climb.ClimbIOReal());
             }
 
             case SIM -> {
@@ -185,8 +182,6 @@ public class RobotContainer {
                         driveSimulation::getSimulatedDriveTrainPose,
                         arm::getArmAngle,
                         elevator::getHeightMeters);
-
-                climb = new Climb(new Climb.ClimbIO() {});
             }
 
             default -> {
@@ -212,8 +207,6 @@ public class RobotContainer {
                         RobotState.getInstance()::getPrimaryEstimatorPose,
                         arm::getArmAngle,
                         elevator::getHeightMeters);
-
-                climb = new Climb(new Climb.ClimbIO() {});
             }
         }
 
@@ -431,10 +424,6 @@ public class RobotContainer {
         operator.rightTrigger(0.5).and(isAlgaeMode).whileTrue(coralHolder.runVolts(10, 0));
         isAlgaeMode.onFalse(coralHolder.runVolts(-2, 0).withTimeout(0.5));
         operator.back().whileTrue(coralHolder.runVolts(-0.5, -6));
-
-        // climbing
-        operator.start().and(operator.b()).onTrue(climb.climbCommand(operator::getLeftY, operator::getRightY));
-        operator.start().and(operator.x()).onTrue(climb.cancelClimb());
 
         operator.y().onTrue(ReefAlignment.selectReefPartButton(3).ignoringDisable(true));
         operator.a().onTrue(ReefAlignment.selectReefPartButton(0).ignoringDisable(true));
