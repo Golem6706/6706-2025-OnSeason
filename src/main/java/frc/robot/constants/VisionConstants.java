@@ -205,7 +205,7 @@ public class VisionConstants {
                                 new Translation2d(0.14, -0.27),
                                 Centimeters.of(57),
                                 Rotation2d.fromDegrees(0),
-                                Degrees.of(-18),
+                                Degrees.of(-33),
                                 Degrees.zero()),
                         new PhotonCameraProperties(
                                 "FrontLeftUpperCam",
