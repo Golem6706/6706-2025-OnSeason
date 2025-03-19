@@ -43,10 +43,10 @@ public class DriveControlLoops {
     public static final AutoAlignment.AutoAlignmentConfigurations REEF_ALIGNMENT_CONFIG_AUTONOMOUS =
             new AutoAlignment.AutoAlignmentConfigurations(
                     Meters.of(0.2),
-                    MetersPerSecond.of(0.8),
-                    Meters.of(0.4),
+                    MetersPerSecond.of(1.2),
+                    Meters.of(0.3),
                     MetersPerSecond.of(0.2),
-                    MetersPerSecondPerSecond.of(1.8)); // Auto阶段速度和加速度
+                    MetersPerSecondPerSecond.of(2.2)); // Auto阶段速度和加速度
 
     /*
      贴近Reef的时候的配置参数
@@ -54,10 +54,10 @@ public class DriveControlLoops {
     public static final AutoAlignment.AutoAlignmentConfigurations REEF_ALIGNMENT_CONFIG =
             new AutoAlignment.AutoAlignmentConfigurations(
                     Meters.of(1.0),
-                    MetersPerSecond.of(0.8), // 1
+                    MetersPerSecond.of(1.2), // 1
                     Meters.of(0.5), // 0.3 贴合的时候后退的距离
                     MetersPerSecond.of(0.2),
-                    MetersPerSecondPerSecond.of(2.0)); // 手动阶段速度和 加速度
+                    MetersPerSecondPerSecond.of(2.2)); // 手动阶段速度和 加速度
     /*
      贴近Station的时候的配置参数
     */

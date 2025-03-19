@@ -14,8 +14,8 @@
    "maxvel":{
     "dimension":"LinVel",
     "var":{
-     "exp":"3 m / s",
-     "val":3.0
+     "exp":"3.5 m / s",
+     "val":3.5
     }
    },
    "stationspeed":{
@@ -28,8 +28,8 @@
    "transvel":{
     "dimension":"LinVel",
     "var":{
-     "exp":"0.5 m / s",
-     "val":0.5
+     "exp":"1 m / s",
+     "val":1.0
     }
    }
   },
@@ -96,8 +96,8 @@
    "val":1.0
   },
   "cof":{
-   "exp":"1.3",
-   "val":1.3
+   "exp":"0.9",
+   "val":0.9
   },
   "bumper":{
    "front":{

@@ -57,8 +57,10 @@ public class ThreeCoralShort implements Auto {
         int thirdGoalAndFourthGoal = isRightSide ? 2 : 11;
 
         // Score preloaded
-        commandGroup.addCommands(ReefAlignment.followPathAndAlign(
-                robot, Auto.getChoreoPath("place preload", isRightSide), firstGoal, robot.moveToL4()));
+        Command waitAndRaiseElevator = Commands.waitSeconds(0.85).andThen(robot.moveToL4());
+        commandGroup.addCommands(Commands.runOnce(waitAndRaiseElevator::schedule));
+        commandGroup.addCommands(
+                ReefAlignment.followPathAndAlign(robot, Auto.getChoreoPath("place preload", isRightSide), firstGoal));
         commandGroup.addCommands(Commands.waitUntil(robot.superStructure.atReference)
                 .withTimeout(WAIT_FOR_SUPER_STRUCTURE_TIMEOUT.in(Seconds)));
         commandGroup.addCommands(robot.scoreCoral(SCORING_TIME.in(Seconds)));
@@ -74,8 +76,8 @@ public class ThreeCoralShort implements Auto {
         commandGroup.addCommands(waitForIntake(robot));
 
         // Score second
-        commandGroup.addCommands(ReefAlignment.followPathAndAlign(
-                robot, Auto.getChoreoPath("place second", isRightSide), secondGoal, robot.moveToL4()));
+        commandGroup.addCommands(
+                ReefAlignment.followPathAndAlign(robot, Auto.getChoreoPath("place second", isRightSide), secondGoal));
         commandGroup.addCommands(Commands.waitUntil(robot.superStructure.atReference)
                 .withTimeout(WAIT_FOR_SUPER_STRUCTURE_TIMEOUT.in(Seconds)));
         commandGroup.addCommands(robot.scoreCoral(SCORING_TIME.in(Seconds)));
@@ -92,7 +94,7 @@ public class ThreeCoralShort implements Auto {
 
         // Score Third
         commandGroup.addCommands(ReefAlignment.followPathAndAlign(
-                robot, Auto.getChoreoPath("place third", isRightSide), thirdGoalAndFourthGoal, robot.moveToL4()));
+                robot, Auto.getChoreoPath("place third", isRightSide), thirdGoalAndFourthGoal));
         commandGroup.addCommands(Commands.waitUntil(robot.superStructure.atReference)
                 .withTimeout(WAIT_FOR_SUPER_STRUCTURE_TIMEOUT.in(Seconds)));
         commandGroup.addCommands(robot.scoreCoral(SCORING_TIME.in(Seconds)));

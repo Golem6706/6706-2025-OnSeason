@@ -55,9 +55,9 @@ public final class ElevatorConstants {
                         Millimeters.of(9.525),
                         12,
                         3,
-                        9.0 * 60.0 / 36.0,
-                        DCMotor.getKrakenX60(1),
-                        Kilograms.of(7.0),
+                        5.0 * 60.0 / 36.0,
+                        DCMotor.getKrakenX60(2),
+                        Kilograms.of(4.0),
                         Meters.of(1.82), // The max hight of the elevator 1.75
                         15,
                         false);
@@ -105,15 +105,15 @@ public final class ElevatorConstants {
                         Centimeters.of(2));
                 case TEAM_6706_COMPBOT -> new ElevatorPIDConstants(
                         0.1,
-                        0.40,
-                        5.25,
-                        0.05,
+                        0.25,
+                        3.01,
+                        0.03,
                         6.0 / 0.2,
                         3.0 / 0.2,
                         Volts.of(12),
                         Volts.of(-8),
-                        MetersPerSecond.of(2), // Speed of elevator origianl number is 1.4
-                        MetersPerSecondPerSecond.of(6.0), // accleration of elevator
+                        MetersPerSecond.of(3.0), // Speed of elevator origianl number is 1.4
+                        MetersPerSecondPerSecond.of(10.0), // accleration of elevator
                         Centimeters.of(2));
             };
 }
