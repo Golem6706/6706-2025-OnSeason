@@ -5,6 +5,7 @@ import static edu.wpi.first.units.Units.*;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.*;
 import frc.robot.Robot;
+import java.util.OptionalInt;
 
 public final class ElevatorConstants {
     // General Constants (shared across all robots)
@@ -27,7 +28,9 @@ public final class ElevatorConstants {
             Mass ELEVATOR_CARRIAGE_WEIGHT,
             Distance ELEVATOR_MAX_HEIGHT,
             int ELEVATOR_MOTOR_ID,
-            boolean ELEVATOR_MOTOR_INVERTED) {}
+            boolean ELEVATOR_MOTOR_INVERTED,
+            OptionalInt ELEVATOR_FOLLOWER_ID,
+            boolean ELEVATOR_FOLLOWER_INVERTED) {}
 
     public static final ElevatorHardwareConstants HARDWARE_CONSTANTS =
             switch (Robot.CURRENT_ROBOT) {
@@ -40,6 +43,8 @@ public final class ElevatorConstants {
                         Kilograms.of(10.0),
                         Meters.of(1.34),
                         1,
+                        false,
+                        OptionalInt.empty(),
                         false);
                 case TEAM_5516_COMPBOT_HYDROXIDE_II -> new ElevatorHardwareConstants(
                         Inches.of(0.25),
@@ -50,17 +55,21 @@ public final class ElevatorConstants {
                         Kilograms.of(6.0),
                         Meters.of(1.34),
                         2,
+                        false,
+                        OptionalInt.empty(),
                         false);
                 case TEAM_6706_COMPBOT -> new ElevatorHardwareConstants(
                         Millimeters.of(9.525),
                         12,
                         3,
-                        5.0 * 60.0 / 36.0,
+                        9.0 * 60.0 / 36.0,
                         DCMotor.getKrakenX60(2),
                         Kilograms.of(4.0),
                         Meters.of(1.82), // The max hight of the elevator 1.75
                         15,
-                        false);
+                        false,
+                        OptionalInt.of(16),
+                        true);
             };
 
     // Elevator PID Constants
@@ -110,7 +119,7 @@ public final class ElevatorConstants {
                         0.03,
                         6.0 / 0.2,
                         3.0 / 0.2,
-                        Volts.of(12),
+                        Volts.of(10),
                         Volts.of(-8),
                         MetersPerSecond.of(3.0), // Speed of elevator origianl number is 1.4
                         MetersPerSecondPerSecond.of(10.0), // accleration of elevator

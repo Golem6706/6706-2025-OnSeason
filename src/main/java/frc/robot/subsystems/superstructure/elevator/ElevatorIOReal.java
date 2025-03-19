@@ -18,16 +18,20 @@ import edu.wpi.first.units.measure.*;
 public class ElevatorIOReal implements ElevatorIO {
     // Hardware
     private final TalonFX elevatorTalon;
+    private final TalonFX elevatorFollowerTalon;
 
     // CTRE Status Signals
-    private final StatusSignal<Angle> motor1Position;
-    private final StatusSignal<AngularVelocity> motor1Velocity;
+    private final StatusSignal<Angle> motorPosition;
+    private final StatusSignal<AngularVelocity> motorVelocity;
     private final StatusSignal<Current> motorSupplyCurrent;
     private final StatusSignal<Voltage> motorOutputVoltage;
     private final StatusSignal<Temperature> motorTemperature;
 
     public ElevatorIOReal() {
         this.elevatorTalon = new TalonFX(HARDWARE_CONSTANTS.ELEVATOR_MOTOR_ID());
+        this.elevatorFollowerTalon = HARDWARE_CONSTANTS.ELEVATOR_FOLLOWER_ID().isPresent()
+                ? new TalonFX(HARDWARE_CONSTANTS.ELEVATOR_FOLLOWER_ID().getAsInt())
+                : null;
         CurrentLimitsConfigs currentLimitsConfigs = new CurrentLimitsConfigs()
                 .withStatorCurrentLimitEnable(true)
                 .withStatorCurrentLimit(STATOR_CURRENT_LIMIT)
@@ -37,22 +41,34 @@ public class ElevatorIOReal implements ElevatorIO {
                 .withSupplyCurrentLowerTime(OVERHEAT_PROTECTION_TIME)
                 .withSupplyCurrentLowerLimit(OVERHEAT_PROTECTION_CURRENT);
         this.elevatorTalon.getConfigurator().apply(currentLimitsConfigs);
+        if (this.elevatorFollowerTalon != null) {
+            this.elevatorFollowerTalon.getConfigurator().apply(currentLimitsConfigs);
+            this.elevatorFollowerTalon
+                    .getConfigurator()
+                    .apply(new MotorOutputConfigs()
+                            .withNeutralMode(NeutralModeValue.Brake)
+                            .withInverted(
+                                    HARDWARE_CONSTANTS.ELEVATOR_FOLLOWER_INVERTED()
+                                            ? InvertedValue.Clockwise_Positive
+                                            : InvertedValue.CounterClockwise_Positive));
+        }
         this.elevatorTalon
                 .getConfigurator()
                 .apply(new MotorOutputConfigs()
+                        .withNeutralMode(NeutralModeValue.Brake)
                         .withInverted(
                                 HARDWARE_CONSTANTS.ELEVATOR_MOTOR_INVERTED()
                                         ? InvertedValue.Clockwise_Positive
                                         : InvertedValue.CounterClockwise_Positive));
 
-        this.motor1Position = elevatorTalon.getPosition();
-        this.motor1Velocity = elevatorTalon.getVelocity();
+        this.motorPosition = elevatorTalon.getPosition();
+        this.motorVelocity = elevatorTalon.getVelocity();
         this.motorSupplyCurrent = elevatorTalon.getSupplyCurrent();
         this.motorOutputVoltage = elevatorTalon.getMotorVoltage();
         this.motorTemperature = elevatorTalon.getDeviceTemp();
 
         BaseStatusSignal.setUpdateFrequencyForAll(
-                100.0, motor1Position, motor1Velocity, motorSupplyCurrent, motorOutputVoltage, motorTemperature);
+                100.0, motorPosition, motorVelocity, motorSupplyCurrent, motorOutputVoltage, motorTemperature);
 
         elevatorTalon.optimizeBusUtilization();
         elevatorTalon.setPosition(0);
@@ -61,11 +77,11 @@ public class ElevatorIOReal implements ElevatorIO {
     @Override
     public void updateInputs(ElevatorInputs inputs) {
         StatusCode statusCode = BaseStatusSignal.refreshAll(
-                motor1Position, motor1Velocity, motorSupplyCurrent, motorOutputVoltage, motorTemperature);
+                motorPosition, motorVelocity, motorSupplyCurrent, motorOutputVoltage, motorTemperature);
 
         inputs.hardwareConnected = statusCode.isOK();
-        inputs.encoderAngleRad = Units.rotationsToRadians(motor1Position.getValueAsDouble());
-        inputs.encoderVelocityRadPerSec = Units.rotationsToRadians(motor1Velocity.getValueAsDouble());
+        inputs.encoderAngleRad = Units.rotationsToRadians(motorPosition.getValueAsDouble());
+        inputs.encoderVelocityRadPerSec = Units.rotationsToRadians(motorVelocity.getValueAsDouble());
         inputs.motorSupplyCurrentAmps = motorSupplyCurrent.getValueAsDouble();
         inputs.motorOutputVolts = motorOutputVoltage.getValueAsDouble();
         inputs.motorTemperatureCelsius = motorTemperature.getValueAsDouble();
@@ -77,11 +93,13 @@ public class ElevatorIOReal implements ElevatorIO {
     public void setMotorOutput(double volts) {
         voltageOut.withOutput(volts);
         elevatorTalon.setControl(voltageOut);
+        if (elevatorFollowerTalon != null) elevatorFollowerTalon.setControl(voltageOut);
     }
 
     @Override
     public void setMotorBrake(boolean brakeModeEnable) {
         NeutralModeValue value = brakeModeEnable ? NeutralModeValue.Brake : NeutralModeValue.Coast;
         elevatorTalon.setNeutralMode(value);
+        elevatorFollowerTalon.setNeutralMode(value);
     }
 }
