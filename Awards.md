@@ -22,7 +22,7 @@ The Autonomous Award celebrates the team that has demonstrated consistent, relia
 
 > They say great robots know no borders, and this team proved it. Their robot moved with the precision of a Swiss watch, yet they are not Swiss, however they slithered through the field with the grace of a snake. In a year that celebrates the serpent, this team from Shenzhen, China has shown us what it truly means to master the art of autonomous.
 >
-> Congratulations, Team 5516!
+> Congratulations, Team 6706!
 > 
 > — FRC Committee
 
